@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Micro-Project of CSS</title>
+
+<style>
+/* 🌈 Animated Background */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a40);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 💎 Container */
+.container {
+  width: 380px;
+  max-height: 90vh;
+  padding: 25px;
+  border-radius: 25px;
+  backdrop-filter: blur(25px);
+  background: rgba(255,255,255,0.07);
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* 🌈 Title Glow */
+h1 {
+  font-size: 28px;
+  margin-bottom: 5px;
+  background: linear-gradient(45deg, #ff7eb3, #65d6ce, #ffd166);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowText 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowText {
+  from { text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+  to { text-shadow: 0 0 25px rgba(255,255,255,0.6); }
+}
+
+/* ✨ Input Box */
+.input-box {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+input {
+  flex: 1;
+  padding: 14px;
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  transition: 0.3s;
+}
+
+input:focus {
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 0 10px #65d6ce;
+}
+
+input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+/* 🚀 Buttons */
+button {
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(45deg, #ff7eb3, #65d6ce);
+  color: white;
+  font-weight: bold;
+  transition: 0.25s;
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 0 15px rgba(255,255,255,0.5);
+}
+
+/* 📊 Progress */
+#progress {
+  margin: 10px 0;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* 📜 List */
+ul {
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+/* 🎯 Task Card */
+li {
+  list-style: none;
+  background: rgba(255,255,255,0.12);
+  padding: 14px;
+  border-radius: 16px;
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+  position: relative;
+}
+
+/* Glow Hover */
+li:hover {
+  transform: translateY(-5px) scale(1.02);
+  background: rgba(255,255,255,0.2);
+  box-shadow: 0 0 20px rgba(101,214,206,0.5);
+}
+
+/* ✅ Completed */
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* ⭐ Important Glow */
+.important {
+  border: 2px solid gold;
+  box-shadow: 0 0 15px gold;
+}
+
+/* 🎛️ Actions */
+.actions button {
+  margin-left: 5px;
+  padding: 6px 9px;
+  font-size: 12px;
+}
+
+/* 🕒 Timestamp */
+.timestamp {
+  font-size: 10px;
+  opacity: 0.6;
+  display: block;
+}
+
+/* 🔍 Search */
+#searchInput {
+  margin-top: 10px;
+}
+
+/* 🎉 Popup */
+.popup {
+  position: fixed;
+  top: 20px;
+  right: -300px;
+  background: linear-gradient(45deg, #00ffcc, #65d6ce);
+  color: black;
+  padding: 12px 18px;
+  border-radius: 12px;
+  transition: 0.4s;
+  font-weight: bold;
+  box-shadow: 0 0 20px rgba(0,255,200,0.6);
+}
+
+.popup.show {
+  right: 20px;
+}
+
+/* 🌙 Light Mode */
+.light-mode {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  color: black;
+}
+
+.light-mode .container {
+  background: rgba(0,0,0,0.08);
+}
+
+.light-mode li {
+  background: rgba(0,0,0,0.08);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>TO-DO-LIST: Micro-Project</h1>
+
+  <div class="input-box">
+    <input type="text" id="taskInput" placeholder="Add a vibe...">
+    <button onclick="addTask()">+</button>
+  </div>
+
+  <div id="progress">0 / 0 completed</div>
+
+  <ul id="taskList"></ul>
+
+  <button onclick="clearAll()">🧹 Clear All</button>
+
+  <br><br>
+
+  <!-- 🔍 Search -->
+  <input type="text" id="searchInput" placeholder="🔍 Search vibes..." onkeyup="searchTasks()">
+
+  <br><br>
+
+  <!-- Extra Features -->
+  <button onclick="toggleTheme()">🌙 Toggle Theme</button>
+  <button onclick="markAllComplete()">✅ Complete All</button>
+  <button onclick="sortImportant()">📌 Important First</button>
+  <button onclick="undoDelete()">↩️ Undo Delete</button>
+</div>
+
+<div id="popup" class="popup"></div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let deletedTask = null;
+
+/* 🎨 Render */
+function renderTasks() {
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+
+  let completed = 0;
+
+  tasks.forEach((task, index) => {
+    if (task.done) completed++;
+
+    const li = document.createElement("li");
+    li.className = `
+      ${task.done ? "completed" : ""}
+      ${task.important ? "important" : ""}
+    `;
+
+    li.innerHTML = `
+      <span ondblclick="editTask(${index})">
+        ${task.text}
+        ${task.time ? `<span class="timestamp">${task.time}</span>` : ""}
+      </span>
+      <div class="actions">
+        <button onclick="completeTask(${index})">✔️</button>
+        <button onclick="toggleImportant(${index})">⭐</button>
+        <button onclick="deleteTask(${index})">❌</button>
+      </div>
+    `;
+
+    list.appendChild(li);
+  });
+
+  document.getElementById("progress").innerText =
+    `${completed} / ${tasks.length} completed`;
+}
+
+/* ➕ Add Task */
+function addTask() {
+  const input = document.getElementById("taskInput");
+  const value = input.value.trim();
+
+  if (value === "") return;
+
+  tasks.push({
+    text: value,
+    done: false,
+    important: false,
+    time: new Date().toLocaleString()
+  });
+
+  saveTasks();
+  input.value = "";
+  renderTasks();
+  showPopup("✅ Task Added");
+}
+
+/* ❌ Delete */
+function deleteTask(index) {
+  deletedTask = tasks[index];
+  tasks.splice(index, 1);
+  saveTasks();
+  renderTasks();
+  showPopup("❌ Task Deleted");
+}
+
+/* ↩️ Undo */
+function undoDelete() {
+  if (deletedTask) {
+    tasks.push(deletedTask);
+    deletedTask = null;
+    saveTasks();
+    renderTasks();
+    showPopup("↩️ Undo Successful");
+  }
+}
+
+/* ✔️ Complete */
+function completeTask(index) {
+  tasks[index].done = true;
+  saveTasks();
+  renderTasks();
+  showPopup("🎉 Task Completed!");
+}
+
+/* ⭐ Important */
+function toggleImportant(index) {
+  tasks[index].important = !tasks[index].important;
+  saveTasks();
+  renderTasks();
+  showPopup("⭐ Updated");
+}
+
+/* ✏️ Edit */
+function editTask(index) {
+  const newText = prompt("Edit your task:", tasks[index].text);
+  if (newText !== null && newText.trim() !== "") {
+    tasks[index].text = newText.trim();
+    saveTasks();
+    renderTasks();
+    showPopup("✏️ Task Updated");
+  }
+}
+
+/* 🧹 Clear All */
+function clearAll() {
+  if (confirm("Delete all tasks?")) {
+    tasks = [];
+    saveTasks();
+    renderTasks();
+    showPopup("🧹 All Cleared");
+  }
+}
+
+/* 💾 Save */
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+/* 🔍 Search */
+function searchTasks() {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  const items = document.querySelectorAll("#taskList li");
+
+  items.forEach((li) => {
+    const text = li.innerText.toLowerCase();
+    li.style.display = text.includes(query) ? "flex" : "none";
+  });
+}
+
+/* 🌙 Theme */
+function toggleTheme() {
+  document.body.classList.toggle("light-mode");
+}
+
+/* 📌 Sort */
+function sortImportant() {
+  tasks.sort((a, b) => b.important - a.important);
+  saveTasks();
+  renderTasks();
+  showPopup("📌 Sorted");
+}
+
+/* ✅ Complete All */
+function markAllComplete() {
+  tasks.forEach(task => task.done = true);
+  saveTasks();
+  renderTasks();
+  showPopup("🎉 All Completed!");
+}
+
+/* ⌨️ Enter Key */
+document.getElementById("taskInput")
+  .addEventListener("keypress", function(e) {
+    if (e.key === "Enter") addTask();
+});
+
+/* 🎉 Popup */
+function showPopup(message) {
+  const popup = document.getElementById("popup");
+  popup.innerText = message;
+  popup.classList.add("show");
+
+  setTimeout(() => {
+    popup.classList.remove("show");
+  }, 2000);
+}
+
+/* 🚀 Init */
+renderTasks();
+</script>
+
+</body>
+</html>
